@@ -45,46 +45,46 @@ namespace Facebook
         /// Domain Maps
         /// </summary>
         public static Dictionary<string, Uri> DomainMaps = new Dictionary<string, Uri> {
-            { DOMAIN_MAP_API,       new Uri("https://api.facebook.com/v2.0/") },
-            { DOMAIN_MAP_API_READ,  new Uri("https://api-read.facebook.com/v2.0/") },
-            { DOMAIN_MAP_API_VIDEO, new Uri("https://api-video.facebook.com/v2.0/") },
-            { DOMAIN_MAP_GRAPH,     new Uri("https://graph.facebook.com/v2.0/") },
-            { DOMAIN_MAP_GRAPH_VIDEO,new Uri("https://graph-video.facebook.com/v2.0/")},
-            { DOMAIN_MAP_WWW,       new Uri("http://www.facebook.com/v2.0/") },
-            { DOMAIN_MAP_APPS,      new Uri("http://apps.facebook.com/v2.0/") }
+            { DOMAIN_MAP_API,       new Uri("https://api.facebook.com/") },
+            { DOMAIN_MAP_API_READ,  new Uri("https://api-read.facebook.com/") },
+            { DOMAIN_MAP_API_VIDEO, new Uri("https://api-video.facebook.com/") },
+            { DOMAIN_MAP_GRAPH,     new Uri("https://graph.facebook.com/") },
+            { DOMAIN_MAP_GRAPH_VIDEO,new Uri("https://graph-video.facebook.com/")},
+            { DOMAIN_MAP_WWW,       new Uri("http://www.facebook.com/") },
+            { DOMAIN_MAP_APPS,      new Uri("http://apps.facebook.com/") }
         };
 
         /// <summary>
         /// Secure Domain Maps
         /// </summary>
         public static Dictionary<string, Uri> DomainMapsSecure = new Dictionary<string, Uri> {
-            { DOMAIN_MAP_API,       new Uri("https://api.facebook.com/v2.0/") },
-            { DOMAIN_MAP_API_READ,  new Uri("https://api-read.facebook.com/v2.0/") },
-            { DOMAIN_MAP_API_VIDEO, new Uri("https://api-video.facebook.com/v2.0/") },
-            { DOMAIN_MAP_GRAPH,     new Uri("https://graph.facebook.com/v2.0/") },
-            { DOMAIN_MAP_GRAPH_VIDEO,new Uri("https://graph-video.facebook.com/v2.0/")},
-            { DOMAIN_MAP_WWW,       new Uri("https://www.facebook.com/v2.0/") },
-            { DOMAIN_MAP_APPS,      new Uri("https://apps.facebook.com/v2.0/") }
+            { DOMAIN_MAP_API,       new Uri("https://api.facebook.com/") },
+            { DOMAIN_MAP_API_READ,  new Uri("https://api-read.facebook.com/") },
+            { DOMAIN_MAP_API_VIDEO, new Uri("https://api-video.facebook.com/") },
+            { DOMAIN_MAP_GRAPH,     new Uri("https://graph.facebook.com/") },
+            { DOMAIN_MAP_GRAPH_VIDEO,new Uri("https://graph-video.facebook.com/")},
+            { DOMAIN_MAP_WWW,       new Uri("https://www.facebook.com/") },
+            { DOMAIN_MAP_APPS,      new Uri("https://apps.facebook.com/") }
         };
 
         public static Dictionary<string, Uri> DomainMapsBeta = new Dictionary<string, Uri> {
-            { DOMAIN_MAP_API,       new Uri("https://api.beta.facebook.com/v2.0/") },
-            { DOMAIN_MAP_API_READ,  new Uri("https://api-read.beta.facebook.com/v2.0/") },
-            { DOMAIN_MAP_API_VIDEO, new Uri("https://api-video.beta.facebook.com/v2.0/") },
-            { DOMAIN_MAP_GRAPH,     new Uri("https://graph.beta.facebook.com/v2.0/") },
-            { DOMAIN_MAP_GRAPH_VIDEO,new Uri("https://graph-video.beta.facebook.com/v2.0/")},
-            { DOMAIN_MAP_WWW,       new Uri("http://www.beta.facebook.com/v2.0/") },
-            { DOMAIN_MAP_APPS,      new Uri("http://apps.beta.facebook.com/v2.0/") }
+            { DOMAIN_MAP_API,       new Uri("https://api.beta.facebook.com/") },
+            { DOMAIN_MAP_API_READ,  new Uri("https://api-read.beta.facebook.com/") },
+            { DOMAIN_MAP_API_VIDEO, new Uri("https://api-video.beta.facebook.com/") },
+            { DOMAIN_MAP_GRAPH,     new Uri("https://graph.beta.facebook.com/") },
+            { DOMAIN_MAP_GRAPH_VIDEO,new Uri("https://graph-video.beta.facebook.com/")},
+            { DOMAIN_MAP_WWW,       new Uri("http://www.beta.facebook.com/") },
+            { DOMAIN_MAP_APPS,      new Uri("http://apps.beta.facebook.com/") }
         };
 
         public static Dictionary<string, Uri> DomainMapsBetaSecure = new Dictionary<string, Uri> {
-            { DOMAIN_MAP_API,       new Uri("https://api.beta.facebook.com/v2.0/") },
-            { DOMAIN_MAP_API_READ,  new Uri("https://api-read.beta.facebook.com/v2.0/") },
-            { DOMAIN_MAP_API_VIDEO, new Uri("https://api-video.beta.facebook.com/v2.0/") },
-            { DOMAIN_MAP_GRAPH,     new Uri("https://graph.beta.facebook.com/v2.0/") },
-            { DOMAIN_MAP_GRAPH_VIDEO,new Uri("https://graph-video.beta.facebook.com/v2.0/")},
-            { DOMAIN_MAP_WWW,       new Uri("https://www.beta.facebook.com/v2.0/") },
-            { DOMAIN_MAP_APPS,      new Uri("https://apps.beta.facebook.com/v2.0/") }
+            { DOMAIN_MAP_API,       new Uri("https://api.beta.facebook.com/") },
+            { DOMAIN_MAP_API_READ,  new Uri("https://api-read.beta.facebook.com/") },
+            { DOMAIN_MAP_API_VIDEO, new Uri("https://api-video.beta.facebook.com/") },
+            { DOMAIN_MAP_GRAPH,     new Uri("https://graph.beta.facebook.com/") },
+            { DOMAIN_MAP_GRAPH_VIDEO,new Uri("https://graph-video.beta.facebook.com/")},
+            { DOMAIN_MAP_WWW,       new Uri("https://www.beta.facebook.com/") },
+            { DOMAIN_MAP_APPS,      new Uri("https://apps.beta.facebook.com/") }
         };
 
         public static string[] ReadOnlyCalls = new[] {
@@ -291,7 +291,7 @@ namespace Facebook
         /// <returns>
         /// The string of the url for the given parameters.
         /// </returns>
-        public static Uri GetUrl(IDictionary<string, Uri> domainMaps, string name, string path, IDictionary<string, object> parameters)
+        public static Uri GetUrl(IDictionary<string, Uri> domainMaps, string name, string path, string apiVersion, IDictionary<string, object> parameters)
         {
             Contract.Requires(!String.IsNullOrEmpty(name));
             Contract.Ensures(Contract.Result<Uri>() != default(Uri));
@@ -309,9 +309,10 @@ namespace Facebook
                     path = path.Length > 1 ? path.Substring(1) : string.Empty;
                 }
 
-                if (!string.IsNullOrEmpty(path))
-                {
-                    uri.Path = HttpHelper.UrlEncode(path);
+                if ( string.IsNullOrEmpty(path) ) {
+                    uri.Path = apiVersion;
+                } else {
+                    uri.Path = apiVersion+"/"+HttpHelper.UrlEncode(path);
                 }
             }
 

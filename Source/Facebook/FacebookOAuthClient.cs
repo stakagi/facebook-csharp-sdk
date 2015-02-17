@@ -33,6 +33,11 @@ namespace Facebook
         private string _appSecret;
 
         /// <summary>
+        /// The Facebook API Version.
+        /// </summary>
+        private string _apiVersion;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="FacebookOAuthClient"/> class.
         /// </summary>
         public FacebookOAuthClient()
@@ -51,6 +56,7 @@ namespace Facebook
             {
                 _appId = facebookApplication.AppId;
                 _appSecret = facebookApplication.AppSecret;
+                _apiVersion = facebookApplication.ApiVersion;
             }
         }
 
@@ -73,6 +79,18 @@ namespace Facebook
         /// Gets or sets the app secret.
         /// </summary>
         public virtual string AppSecret { get { return _appSecret; } set { _appSecret = value; } }
+
+        /// <summary>
+        /// Gets or sets the api version.
+        /// </summary>
+        public virtual string ApiVersion {
+            get {
+                return _apiVersion;
+            }
+            set {
+                _apiVersion = value;
+            }
+        }
 
         /// <summary>
         /// Gets or sets the redirect uri.
@@ -125,8 +143,7 @@ namespace Facebook
         ///     response_type : Optional, default is token. The requested response: an access token (token), an authorization code (code), or both (code token).
         ///     display       : The display mode in which to render the dialog. The default is page on the www subdomain and wap on the m subdomain. This is automatically specified by most SDKs. (For WP7 builds it is set to touch.)
         /// </remarks>
-        public virtual Uri GetLoginUrl(IDictionary<string, object> parameters)
-        {
+        public virtual Uri GetLoginUrl(IDictionary<string, object> parameters) {
             Contract.Ensures(Contract.Result<Uri>() != null);
 
             var defaultParameters = new Dictionary<string, object>();
@@ -138,13 +155,11 @@ namespace Facebook
             var mergedParameters = FacebookUtils.Merge(defaultParameters, parameters);
 
             // check if client_id and redirect_uri is not null or empty.
-            if (mergedParameters["client_id"] == null || string.IsNullOrEmpty(mergedParameters["client_id"].ToString()))
-            {
+            if ( mergedParameters["client_id"] == null || string.IsNullOrEmpty(mergedParameters["client_id"].ToString()) ) {
                 throw new ArgumentException("client_id required.");
             }
 
-            if (mergedParameters["redirect_uri"] == null || string.IsNullOrEmpty(mergedParameters["redirect_uri"].ToString()))
-            {
+            if ( mergedParameters["redirect_uri"] == null || string.IsNullOrEmpty(mergedParameters["redirect_uri"].ToString()) ) {
                 throw new ArgumentException("redirect_uri required.");
             }
 
@@ -155,8 +170,12 @@ namespace Facebook
             // this seems to happen for iis hosted apps.
             mergedParameters["redirect_uri"] = mergedParameters["redirect_uri"].ToString();
 
-            var url = "http://www.facebook.com/dialog/oauth/?" + FacebookUtils.ToJsonQueryString(mergedParameters);
-            
+            var baseUrl = "http://www.facebook.com/";
+            if ( !string.IsNullOrEmpty(this.ApiVersion) )
+                baseUrl = baseUrl + this.ApiVersion + "/";
+
+            var url = baseUrl + "dialog/oauth/?" + FacebookUtils.ToJsonQueryString(mergedParameters);
+
             // In order to be compliant with the OAuth spec Facebook have made changes to their auth APIs.
             // As part of this update, they will be deprecating 'code_and_token' and need developers 
             // to use 'code%20token'. Everything is identical, just replace '_and_' with encoded
@@ -937,12 +956,11 @@ namespace Facebook
         /// <returns>
         /// The string of the url for the given parameters.
         /// </returns>
-        internal protected virtual Uri GetUrl(string name, string path, IDictionary<string, object> parameters)
-        {
+        internal protected virtual Uri GetUrl(string name, string path, IDictionary<string, object> parameters) {
             Contract.Requires(!String.IsNullOrEmpty(name));
             Contract.Ensures(Contract.Result<Uri>() != default(Uri));
 
-            return FacebookUtils.GetUrl(DomainMaps, name, path, parameters);
+            return FacebookUtils.GetUrl(DomainMaps, name, path, this.ApiVersion, parameters);
         }
 
         /// <summary>

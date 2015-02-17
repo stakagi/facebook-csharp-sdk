@@ -54,5 +54,10 @@ namespace Facebook
         /// Gets or sets a value indicating whether to use Facebook beta.
         /// </summary>
         public bool UseFacebookBeta { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Facebook api version.
+        /// </summary>
+        public string ApiVersion { get; set; }
     }
 }

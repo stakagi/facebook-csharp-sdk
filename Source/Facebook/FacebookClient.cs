@@ -31,6 +31,11 @@ namespace Facebook
         private bool _useFacebookBeta = FacebookApplication.Current.UseFacebookBeta;
 
         /// <summary>
+        /// The Facebook api version.
+        /// </summary>
+        private string _apiVersion = FacebookApplication.Current.ApiVersion;
+
+        /// <summary>
         /// The Facebook access token.
         /// </summary>
         private string _accessToken;
@@ -134,6 +139,15 @@ namespace Facebook
         {
             get { return _useFacebookBeta; }
             set { _useFacebookBeta = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the Facebook api version.
+        /// </summary>
+        public virtual string ApiVersion
+        {
+            get { return _apiVersion; }
+            set { _apiVersion = value; }
         }
 
         /// <summary>
@@ -1890,12 +1904,11 @@ namespace Facebook
             return new CombinationStream.CombinationStream(streams);
         }
 
-        protected virtual Uri GetUrl(string name, string path, IDictionary<string, object> parameters)
-        {
+        protected virtual Uri GetUrl(string name, string path, IDictionary<string, object> parameters) {
             Contract.Requires(!string.IsNullOrEmpty(name));
             Contract.Ensures(Contract.Result<Uri>() != default(Uri));
 
-            return FacebookUtils.GetUrl(DomainMaps, name, path, parameters);
+            return FacebookUtils.GetUrl(DomainMaps, name, path, this.ApiVersion, parameters);
         }
 
         protected virtual Uri GetApiUrl(string method)

@@ -104,6 +104,16 @@ namespace Facebook
         }
 
         /// <summary>
+        /// Gets or sets a value indicating whether to use Facebook beta.
+        /// </summary>
+        [ConfigurationProperty("apiVersion", IsRequired = false, DefaultValue = null)]
+        public string ApiVersion
+        {
+            get { return (string)this["apiVersion"]; }
+            set { this["apiVersion"] = value; }
+        }
+
+        /// <summary>
         /// Gets the Facebook settings stored in the configuration file.
         /// </summary>
         internal static IFacebookApplication Current
