@@ -18,6 +18,7 @@ namespace Facebook
     using System.Linq;
     using System.Text;
     using FluentHttp;
+    using System.Text.RegularExpressions;
 
     internal class FacebookUtils
     {
@@ -305,15 +306,16 @@ namespace Facebook
             if (!String.IsNullOrEmpty(path))
             {
                 if (path[0] == '/')
-                {
                     path = path.Length > 1 ? path.Substring(1) : string.Empty;
+
+                var m = Regex.Match(path, "^((?<v>v[1-9][0-9]*\\.[0-9]+)/)?(?<p>.*)$");
+                if (m.Success)
+                {
+                    apiVersion = ((Func<Group, string>)(v => v.Success ? v.Value : apiVersion))(m.Groups["v"]);
+                    path = m.Groups["p"].Value;
                 }
 
-                if ( string.IsNullOrEmpty(path) ) {
-                    uri.Path = apiVersion;
-                } else {
-                    uri.Path = apiVersion+"/"+HttpHelper.UrlEncode(path);
-                }
+                uri.Path = string.IsNullOrEmpty(path) ? apiVersion : apiVersion + "/" + HttpHelper.UrlEncode(path);
             }
 
             if (parameters != null)
