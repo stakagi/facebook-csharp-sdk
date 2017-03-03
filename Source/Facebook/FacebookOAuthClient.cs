@@ -617,18 +617,23 @@ namespace Facebook
 
         private object BuildExchangeCodeForAccessTokenResult(string json)
         {
-            var returnParameter = new JsonObject();
-            FacebookUtils.ParseQueryParametersToDictionary("?" + json, returnParameter);
+            JsonObject jsonObject;
 
-            // access_token=string&expires=long or access_token=string
-            // Convert to JsonObject to support dynamic and be consistent with the rest of the library.
-            var jsonObject = new JsonObject();
-            jsonObject["access_token"] = returnParameter["access_token"];
+            if( json != null && json.StartsWith("{") ) {
+                jsonObject = JsonSerializer.Current.DeserializeObject<JsonObject>(json);
+            } else {
+                var returnParameter = new JsonObject();
+                FacebookUtils.ParseQueryParametersToDictionary("?" + json, returnParameter);
 
-            // check if expires exist coz for offline_access it is not present.
-            if (returnParameter.ContainsKey("expires"))
-            {
-                jsonObject.Add("expires", Convert.ToInt64(returnParameter["expires"]));
+                // access_token=string&expires=long or access_token=string
+                // Convert to JsonObject to support dynamic and be consistent with the rest of the library.
+                jsonObject = new JsonObject();
+                jsonObject["access_token"] = returnParameter["access_token"];
+
+                // check if expires exist coz for offline_access it is not present.
+                if( returnParameter.ContainsKey("expires") ) {
+                    jsonObject.Add("expires", Convert.ToInt64(returnParameter["expires"]));
+                }
             }
 
             return jsonObject;
